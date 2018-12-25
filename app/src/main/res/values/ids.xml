@@ -4,4 +4,7 @@
     <item name="splash_spinner_select_league" type="id"/>
     <item name="splash_linear_final" type="id"/>
     <item name="splash_recycler_textcontent" type="id"/>
+    <item name="adapter_fragment_lastmatch_swiperefresh" type="id"/>
+    <item name="adapter_fragment_lastmatch_recyclerview" type="id"/>
+    <item name="adapter_fragment_lastmatch_progressbar" type="id"/>
 </resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="4dp"
+        app:contentPadding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <!-- in center -->
+            <TextView
+                    android:id="@+id/adapter_cardview_detail_id_propnames"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:text="vs"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_centerInParent="true"
+                    android:textAlignment="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            />
+            <!-- -->
+            <!-- in left -->
+            <TextView
+                    android:layout_toLeftOf="@id/adapter_cardview_detail_id_propnames"
+                    android:layout_toStartOf="@id/adapter_cardview_detail_id_propnames"
+                    android:id="@+id/adapter_cardview_detail_id_home"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="normal"
+                    android:text="vs"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+            />
+
+            <!-- in left -->
+            <TextView
+                    android:layout_toRightOf="@id/adapter_cardview_detail_id_propnames"
+                    android:layout_toEndOf="@id/adapter_cardview_detail_id_propnames"
+                    android:id="@+id/adapter_cardview_detail_id_away"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="normal"
+                    android:text="vs"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:ellipsize="end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+            />
+
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

@@ -6,43 +6,20 @@ import android.net.NetworkInfo
 import java.net.InetAddress
 import java.net.UnknownHostException
 
-class CekKoneksi {
+object CekKoneksi {
     @Throws(InterruptedException::class)
-    fun isConnected(activity: Context, expired: Long): Boolean {
+    fun isConnected(activity: Context): Boolean {
         val connectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).state == NetworkInfo.State.CONNECTED || connectivityManager.getNetworkInfo(
-                ConnectivityManager.TYPE_WIFI
-            ).state == NetworkInfo.State.CONNECTED
-        ) {
-            //we are connected to a network
-            /*IsNetworkReachable isReachableNet = new IsNetworkReachable();
-            isReachableNet.run();
-            int splice = Math.round(expired / 100);
-            for(int x = 0; x < splice; x++) {
-                Thread.sleep(100);
-                if(threadState)
-                    break;
-            }
-            if(isReachableNet.isAlive()) {
-                isReachableNet.interrupt();
-                return false;
-            }
-            else
-                return isReachable;*/
-            isReachable = isReachableNetwoorks()
-            return isReachableNetwoorks()
-        } else
-            return false
+        //val networkInfo = connectivityManager.activeNetworkInfo
+        return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).state == NetworkInfo.State.CONNECTED || connectivityManager.getNetworkInfo(
+            ConnectivityManager.TYPE_WIFI
+        ).state == NetworkInfo.State.CONNECTED
     }
 
     private fun isReachableNetwoorks(): Boolean {
         try {
             val inetAddress = InetAddress.getByName("google.com")
-            return if (inetAddress.toString().length > 1)
-                true
-            else
-                false
+            return inetAddress.toString().length > 1
         } catch (e: UnknownHostException) {
             return false
         }

@@ -19,6 +19,9 @@ import com.apwdevs.tugaskade2_footballmatch.activity_components.onsplash_screen.
 import com.apwdevs.tugaskade2_footballmatch.api_repo.ApiRepository
 import com.google.gson.Gson
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.clearTop
+import org.jetbrains.anko.intentFor
 
 
 class SplashScreen : AppCompatActivity(), SplashView {
@@ -68,6 +71,7 @@ class SplashScreen : AppCompatActivity(), SplashView {
     override fun showLeagueInSpinner(leagues: List<TeamLeagueData>) {
         val adapter = SplashRecyclerAdapter(this, leagues) {
             Toast.makeText(applicationContext, "league id ${it.idLeague}", Toast.LENGTH_SHORT).show()
+            startActivity(intentFor<FootballMatchActivity>("LEAGUE_ID_SELECTED" to it.idLeague).clearTask().clearTop())
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)

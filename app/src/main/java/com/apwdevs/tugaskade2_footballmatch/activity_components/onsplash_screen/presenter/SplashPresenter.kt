@@ -13,7 +13,7 @@ import org.jetbrains.anko.uiThread
 import java.io.*
 
 class SplashPresenter(
-    private val ctx: Context,
+    ctx: Context,
     private val view: SplashView,
     private val apiRepository: ApiRepository,
     private val gson: Gson
