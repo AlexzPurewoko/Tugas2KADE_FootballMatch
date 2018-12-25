@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="splash_relative_loading" type="id"/>
+    <item name="splash_spinner_select_league" type="id"/>
+    <item name="splash_linear_final" type="id"/>
+    <item name="splash_recycler_textcontent" type="id"/>
+</resources>

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TugasKADE2_FootballMatch</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="splash_string_loading_data">Loading data...</string>
+    <string name="splash_string_welcome">Selamat Datang!</string>
+    <string name="aplash_string_select_league">Silahkan pilih liga kesukaan anda</string>
 </resources>
