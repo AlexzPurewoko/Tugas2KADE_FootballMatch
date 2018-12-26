@@ -17,12 +17,12 @@ import com.apwdevs.tugaskade2_footballmatch.fragment_components.presenter.Fragme
 import com.apwdevs.tugaskade2_footballmatch.fragment_components.ui.FragmentLastMatchModel
 import com.apwdevs.tugaskade2_footballmatch.fragment_components.ui.FragmentLastMatchUI
 import com.apwdevs.tugaskade2_footballmatch.fragment_components.ui.adapter.FragmentRecyclerAdapter
-import com.apwdevs.tugaskade2_footballmatch.gone
-import com.apwdevs.tugaskade2_footballmatch.visible
+import com.apwdevs.tugaskade2_footballmatch.utility.ParameterClass
+import com.apwdevs.tugaskade2_footballmatch.utility.gone
+import com.apwdevs.tugaskade2_footballmatch.utility.visible
 import com.google.gson.Gson
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.clearTop
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.intentFor
@@ -54,7 +54,12 @@ class FragmentMatch : Fragment(), FragmentLastMatchModel {
         match_type = arguments?.getSerializable(ARG_MATCH_TYPE) as MATCH_TYPE
         presenter = FragmentLastMatchPresenter(context!!, this, gson, apiRepository)
         adapter = FragmentRecyclerAdapter(items) {
-            startActivity(intentFor<MatchDetail>("MATCH_SELECTED" to it.idEvent).clearTask().clearTop())
+            startActivity(
+                intentFor<MatchDetail>(
+                    ParameterClass.ID_EVENT_MATCH_SELECTED to it.idEvent,
+                    ParameterClass.ID_SELECTED_LEAGUE_KEY to idValue
+                ).clearTask()
+            )
         }
         recyclerView.adapter = adapter
         if (idValue != null && match_type != null)

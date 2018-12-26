@@ -11,16 +11,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import android.widget.Toast
 import com.apwdevs.tugaskade2_footballmatch.activity_components.onsplash_screen.data_controller.TeamLeagueData
 import com.apwdevs.tugaskade2_footballmatch.activity_components.onsplash_screen.presenter.SplashPresenter
 import com.apwdevs.tugaskade2_footballmatch.activity_components.onsplash_screen.ui.SplashRecyclerAdapter
 import com.apwdevs.tugaskade2_footballmatch.activity_components.onsplash_screen.ui.SplashView
 import com.apwdevs.tugaskade2_footballmatch.api_repo.ApiRepository
+import com.apwdevs.tugaskade2_footballmatch.utility.ParameterClass
+import com.apwdevs.tugaskade2_footballmatch.utility.gone
+import com.apwdevs.tugaskade2_footballmatch.utility.visible
 import com.google.gson.Gson
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.clearTop
 import org.jetbrains.anko.intentFor
 
 
@@ -65,13 +66,11 @@ class SplashScreen : AppCompatActivity(), SplashView {
         fade.duration = 1200
         TransitionManager.beginDelayedTransition(linearLayout, fade)
         linearLayout.visible()
-
     }
 
     override fun showLeagueInSpinner(leagues: List<TeamLeagueData>) {
         val adapter = SplashRecyclerAdapter(this, leagues) {
-            Toast.makeText(applicationContext, "league id ${it.idLeague}", Toast.LENGTH_SHORT).show()
-            startActivity(intentFor<FootballMatchActivity>("LEAGUE_ID_SELECTED" to it.idLeague).clearTask().clearTop())
+            startActivity(intentFor<FootballMatchActivity>(ParameterClass.ID_SELECTED_LEAGUE_KEY to it.idLeague).clearTask())
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -96,5 +95,12 @@ class SplashScreen : AppCompatActivity(), SplashView {
             })
             this.iconResource = android.R.drawable.ic_dialog_alert
         }).show()
+    }
+
+    override fun onBackPressed() {
+        val pid = Process.myPid()
+        Handler(Looper.getMainLooper()).postDelayed({
+            Process.killProcess(pid)
+        }, 2000)
     }
 }

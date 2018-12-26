@@ -1,14 +1,18 @@
 <resources>
-    <string name="app_name">TugasKADE2_FootballMatch</string>
+    <string name="app_name">Football Match</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="splash_string_loading_data">Loading data...</string>
     <string name="splash_string_welcome">Selamat Datang!</string>
     <string name="aplash_string_select_league">Silahkan pilih liga kesukaan anda</string>
-    <string name="title_activity_football_match">FootballMatchActivity</string>
+    <string name="title_activity_football_match">List Match</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="tab_text_3">Tab 3</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_match_detail">Match Detail</string>
+    <string name="football_tab_last_match">Last Match</string>
+    <string name="football_tab_next_match">Next Match</string>
+    <string name="adapter_str_vs">vs</string>
+    <string name="str_0">0</string>
 </resources>

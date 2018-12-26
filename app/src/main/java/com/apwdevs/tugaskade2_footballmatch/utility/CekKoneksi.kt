@@ -11,9 +11,13 @@ object CekKoneksi {
     fun isConnected(activity: Context): Boolean {
         val connectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         //val networkInfo = connectivityManager.activeNetworkInfo
-        return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).state == NetworkInfo.State.CONNECTED || connectivityManager.getNetworkInfo(
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).state == NetworkInfo.State.CONNECTED || connectivityManager.getNetworkInfo(
             ConnectivityManager.TYPE_WIFI
-        ).state == NetworkInfo.State.CONNECTED
+            ).state == NetworkInfo.State.CONNECTED
+        ) {
+            return isReachableNetwoorks()
+        }
+        return false
     }
 
     private fun isReachableNetwoorks(): Boolean {

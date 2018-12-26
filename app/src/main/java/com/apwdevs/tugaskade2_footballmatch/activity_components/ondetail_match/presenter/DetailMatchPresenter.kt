@@ -99,7 +99,7 @@ class DetailMatchPresenter(
         ret.add(
             DataPropertyRecycler(
                 false,
-                "GoealKeeper",
+                "GoalKeeper",
                 buildPart(data.strHomeLineupGoalkeeper, ';', '\n'),
                 data.strAwayLineupGoalkeeper
             )
@@ -115,7 +115,7 @@ class DetailMatchPresenter(
         ret.add(
             DataPropertyRecycler(
                 false,
-                "MieldField",
+                "MidField",
                 buildPart(data.strHomeLineupMidfield, ';', '\n'),
                 data.strAwayLineupMidfield
             )

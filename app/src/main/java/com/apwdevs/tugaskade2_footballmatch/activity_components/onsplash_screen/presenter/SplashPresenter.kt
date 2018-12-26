@@ -7,13 +7,14 @@ import com.apwdevs.tugaskade2_footballmatch.activity_components.onsplash_screen.
 import com.apwdevs.tugaskade2_footballmatch.activity_components.onsplash_screen.data_controller.TeamLeagueData
 import com.apwdevs.tugaskade2_footballmatch.activity_components.onsplash_screen.ui.SplashView
 import com.apwdevs.tugaskade2_footballmatch.api_repo.ApiRepository
+import com.apwdevs.tugaskade2_footballmatch.utility.CekKoneksi
 import com.google.gson.Gson
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.io.*
 
 class SplashPresenter(
-    ctx: Context,
+    private val ctx: Context,
     private val view: SplashView,
     private val apiRepository: ApiRepository,
     private val gson: Gson
@@ -23,30 +24,35 @@ class SplashPresenter(
     fun getLeagueList() {
         view.onLoadDataStarted()
         doAsync {
-
+            var msg: String? = null
             var finalData: List<TeamLeagueData>? = null
             if (!fileDir.exists()) {
-                val data = gson.fromJson(
-                    apiRepository.doRequest(GetLeagueSoccer.getAllLeague()),
-                    LeagueResponse::class.java
-                )
-                if (data != null) {
-                    val arr_data = mutableListOf<TeamLeagueData>()
+                if (CekKoneksi.isConnected(ctx)) {
+                    val data = gson.fromJson(
+                        apiRepository.doRequest(GetLeagueSoccer.getAllLeague()),
+                        LeagueResponse::class.java
+                    )
+                    if (data != null) {
+                        val arr_data = mutableListOf<TeamLeagueData>()
 
-                    for ((index, value) in data.leagues.withIndex()) {
-                        if (!value.strSport.equals(FILTER)) continue
-                        arr_data.add(value)
+                        for ((index, value) in data.leagues.withIndex()) {
+                            if (!value.strSport.equals(FILTER)) continue
+                            arr_data.add(value)
+                        }
+                        val fos = FileOutputStream(fileDir)
+                        val oos = ObjectOutputStream(fos)
+                        oos.writeObject(arr_data.toList())
+                        oos.flush()
+                        fos.flush()
+                        oos.close()
+                        fos.close()
+                        finalData = arr_data.toList()
+
+                    } else {
+                        msg = "Cannot get the data from internet!, please make sure you connected the internet!"
                     }
-                    val fos = FileOutputStream(fileDir)
-                    val oos = ObjectOutputStream(fos)
-                    oos.writeObject(arr_data.toList())
-                    oos.flush()
-                    fos.flush()
-                    oos.close()
-                    fos.close()
-                    finalData = arr_data.toList()
                 } else {
-                    view.onDataIsNotLoaded("Cannot get the data from internet!, please make sure you connected the internet!")
+                    msg = "Cannot get the data from internet!, please make sure you connected the internet!"
                 }
             } else {
                 try {
@@ -57,7 +63,8 @@ class SplashPresenter(
                     fis.close()
                 } catch (e: IOException) {
                     fileDir.delete()
-                    view.onDataIsNotLoaded("IOException: $e. Please make sure you restart the application. If this problem is occur again, try reinstalling the app")
+                    msg =
+                            "IOException: $e. Please make sure you restart the application. If this problem is occur again, try reinstalling the app"
                 }
 
                 Thread.sleep(1500)
@@ -66,6 +73,8 @@ class SplashPresenter(
                 if (finalData != null) {
                     view.onLOadDataFinished()
                     view.showLeagueInSpinner(finalData)
+                } else {
+                    if (msg != null) view.onDataIsNotLoaded(msg)
                 }
             }
         }

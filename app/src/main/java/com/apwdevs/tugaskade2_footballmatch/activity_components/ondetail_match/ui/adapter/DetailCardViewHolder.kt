@@ -10,10 +10,11 @@ import com.apwdevs.tugaskade2_footballmatch.activity_components.ondetail_match.d
 import org.jetbrains.anko.textColor
 
 class DetailCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val home: TextView = itemView.findViewById(R.id.adapter_cardview_detail_id_home)
-    private val away: TextView = itemView.findViewById(R.id.adapter_cardview_detail_id_away)
-    private val prop_name: TextView = itemView.findViewById(R.id.adapter_cardview_detail_id_propnames)
+    internal val home: TextView = itemView.findViewById(R.id.adapter_cardview_detail_id_home)
+    internal val away: TextView = itemView.findViewById(R.id.adapter_cardview_detail_id_away)
+    internal val prop_name: TextView = itemView.findViewById(R.id.adapter_cardview_detail_id_propnames)
     fun bindItem(item: DataPropertyRecycler) {
+
         if (item.is_property) {
             val card = itemView as CardView
             card.setCardBackgroundColor(card.context.resources.getColor(R.color.colorPrimary))

@@ -1,12 +1,13 @@
 package com.apwdevs.tugaskade2_footballmatch
 
 import android.content.pm.ActivityInfo
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import com.apwdevs.tugaskade2_footballmatch.activity_components.ondetail_match.data_controller.DataPropertyRecycler
 import com.apwdevs.tugaskade2_footballmatch.activity_components.ondetail_match.data_controller.DetailMatchDataClass
@@ -17,10 +18,14 @@ import com.apwdevs.tugaskade2_footballmatch.activity_components.ondetail_match.u
 import com.apwdevs.tugaskade2_footballmatch.activity_components.ondetail_match.ui.adapter.DetailMatchRecyclerAdapter
 import com.apwdevs.tugaskade2_footballmatch.api_repo.ApiRepository
 import com.apwdevs.tugaskade2_footballmatch.utility.DialogShowHelper
+import com.apwdevs.tugaskade2_footballmatch.utility.ParameterClass
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.activity_match_detail.*
 import kotlinx.android.synthetic.main.content_match_detail.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.intentFor
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,11 +48,43 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
     // recyclersection
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecyclerView.Adapter<DetailCardViewHolder>
-    private lateinit var progressBar: ProgressBar
 
     // other utility
     private val dialog: DialogShowHelper = DialogShowHelper(this)
     private lateinit var id_match: String
+    private lateinit var id_league: String
+    private var home_bitmap: Bitmap? = null
+    private var away_bitmap: Bitmap? = null
+    private val target_home_bitmap: Target = object : Target {
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+
+        }
+
+        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+
+        }
+
+        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+            this@MatchDetail.home_bitmap = bitmap
+            home_logo.setImageBitmap(bitmap)
+        }
+
+    }
+    private val target_away_bitmap: Target = object : Target {
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+
+        }
+
+        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+
+        }
+
+        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+            this@MatchDetail.away_bitmap = bitmap
+            away_logo.setImageBitmap(bitmap)
+        }
+
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +93,8 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setSupportActionBar(toolbar)
         prepareLayout()
-        id_match = intent.getStringExtra("MATCH_SELECTED")
+        id_match = intent.getStringExtra(ParameterClass.ID_EVENT_MATCH_SELECTED)
+        id_league = intent.getStringExtra(ParameterClass.ID_SELECTED_LEAGUE_KEY)
         val apiRepository = ApiRepository()
         val gson = Gson()
         val presenter = DetailMatchPresenter(this, apiRepository, this, gson)
@@ -74,18 +112,15 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
         date_text = content_match_detail_id_date
 
         recyclerView = content_match_detail_id_recyclerlist
-        progressBar = content_match_detail_id_progressbar
         dialog.buildLoadingLayout()
     }
 
     override fun showLoading() {
         dialog.showDialog()
-        progressBar.visible()
     }
 
     override fun hideLoading() {
         dialog.stopDialog()
-        progressBar.gone()
     }
 
     override fun onSuccessLoadingData(
@@ -104,8 +139,8 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
         name_away.text = team_props[1].strTeam
         score_home.text = match_details.intHomeScore
         score_away.text = match_details.intAwayScore
-        Picasso.get().load(team_props[0].strTeamBadge).into(home_logo)
-        Picasso.get().load(team_props[1].strTeamBadge).into(away_logo)
+        Picasso.get().load(team_props[0].strTeamBadge).resize(100, 100).into(target_home_bitmap)
+        Picasso.get().load(team_props[1].strTeamBadge).resize(100, 100).into(target_away_bitmap)
         date_text.text = getDate(match_details.dateEvent, "yyyy-MM-dd")
     }
 
@@ -144,7 +179,27 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
         return "$day, $date $month $year"
     }
 
+    override fun onDestroy() {
+        away_bitmap?.recycle()
+        home_bitmap?.recycle()
+        super.onDestroy()
+    }
+
     override fun onFailedLoadingData(what: String) {
 
+    }
+
+    override fun onBackPressed() {
+        finish()
+        startActivity(
+            intentFor<FootballMatchActivity>(
+                ParameterClass.ID_SELECTED_LEAGUE_KEY to id_league
+            ).clearTask()
+        )
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return false
     }
 }

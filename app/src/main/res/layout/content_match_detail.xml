@@ -19,7 +19,6 @@
                 android:id="@+id/content_match_detail_id_date"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                android:text="Hello World"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,7 +32,7 @@
                     android:id="@+id/content_match_detail_id_vs"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
-                    android:text="vs"
+                    android:text="@string/adapter_str_vs"
                     android:textSize="20sp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -66,7 +65,6 @@
                             android:id="@+id/content_match_detail_id_teamname_left"
                             android:textColor="@android:color/white"
                             android:textStyle="normal"
-                            android:text="vs"
                             android:gravity="center"
                             android:maxLines="1"
                             android:ellipsize="end"
@@ -79,8 +77,8 @@
                         android:id="@+id/content_match_detail_id_teamscore_left"
                         android:textColor="@android:color/white"
                         android:textStyle="bold"
-                        android:text="4"
-                        android:textSize="30sp"
+                        android:text="@string/str_0"
+                        android:textSize="40sp"
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:layout_gravity="center_vertical"
@@ -102,8 +100,8 @@
                         android:id="@+id/content_match_detail_id_teamscore_right"
                         android:textColor="@android:color/white"
                         android:textStyle="bold"
-                        android:text="4"
-                        android:textSize="30sp"
+                        android:text="@string/str_0"
+                        android:textSize="40sp"
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:layout_gravity="center_vertical"
@@ -129,7 +127,6 @@
                             android:id="@+id/content_match_detail_id_teamname_right"
                             android:textColor="@android:color/white"
                             android:textStyle="normal"
-                            android:text="vs"
                             android:gravity="center"
                             android:maxLines="1"
                             android:ellipsize="end"
@@ -141,19 +138,9 @@
 
         </RelativeLayout>
     </LinearLayout>
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <ProgressBar
-                android:id="@+id/content_match_detail_id_progressbar"
-                android:layout_centerHorizontal="true"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-        />
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/content_match_detail_id_recyclerlist"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-    </RelativeLayout>
 
 </LinearLayout>
