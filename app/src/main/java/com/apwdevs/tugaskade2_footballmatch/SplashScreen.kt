@@ -70,7 +70,12 @@ class SplashScreen : AppCompatActivity(), SplashView {
 
     override fun showLeagueInSpinner(leagues: List<TeamLeagueData>) {
         val adapter = SplashRecyclerAdapter(this, leagues) {
-            startActivity(intentFor<FootballMatchActivity>(ParameterClass.ID_SELECTED_LEAGUE_KEY to it.idLeague).clearTask())
+            startActivity(
+                intentFor<FootballMatchActivity>(
+                    ParameterClass.ID_SELECTED_LEAGUE_KEY to it.idLeague,
+                    ParameterClass.NAME_LEAGUE_KEY to it.strLeague
+                ).clearTask()
+            )
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)

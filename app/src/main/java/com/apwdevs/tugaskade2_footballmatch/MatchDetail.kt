@@ -53,6 +53,7 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
     private val dialog: DialogShowHelper = DialogShowHelper(this)
     private lateinit var id_match: String
     private lateinit var id_league: String
+    private lateinit var name_league: String
     private var home_bitmap: Bitmap? = null
     private var away_bitmap: Bitmap? = null
     private val target_home_bitmap: Target = object : Target {
@@ -95,6 +96,7 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
         prepareLayout()
         id_match = intent.getStringExtra(ParameterClass.ID_EVENT_MATCH_SELECTED)
         id_league = intent.getStringExtra(ParameterClass.ID_SELECTED_LEAGUE_KEY)
+        name_league = intent.getStringExtra(ParameterClass.NAME_LEAGUE_KEY)
         val apiRepository = ApiRepository()
         val gson = Gson()
         val presenter = DetailMatchPresenter(this, apiRepository, this, gson)
@@ -193,7 +195,8 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
         finish()
         startActivity(
             intentFor<FootballMatchActivity>(
-                ParameterClass.ID_SELECTED_LEAGUE_KEY to id_league
+                ParameterClass.ID_SELECTED_LEAGUE_KEY to id_league,
+                ParameterClass.NAME_LEAGUE_KEY to name_league
             ).clearTask()
         )
     }

@@ -36,7 +36,10 @@ class FragmentLastMatchPresenter(
             uiThread {
                 if (message == null && data != null) {
                     view.onHideLoading()
-                    view.onShowMatch(data?.events!!)
+                    if (data?.events != null)
+                        view.onShowMatch(data?.events!!)
+                    else
+                        view.onNullMatch(id)
                 } else {
                     view.onCancelShow(message!!)
                 }

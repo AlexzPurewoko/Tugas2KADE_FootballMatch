@@ -17,14 +17,16 @@ import org.jetbrains.anko.intentFor
 class FootballMatchActivity : AppCompatActivity() {
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
-
-
+    private lateinit var league_name: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_football_match)
 
         setSupportActionBar(toolbar)
         val h = intent.getStringExtra(ParameterClass.ID_SELECTED_LEAGUE_KEY)
+        league_name = intent.getStringExtra(ParameterClass.NAME_LEAGUE_KEY)
+
+        supportActionBar?.title = league_name
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager, h)
 
         container.adapter = mSectionsPagerAdapter
@@ -42,9 +44,9 @@ class FootballMatchActivity : AppCompatActivity() {
 
         override fun getItem(position: Int): Fragment {
             if (position == 0) {
-                return FragmentMatch.newInstance(id, MATCH_TYPE.LAST_MATCH)
+                return FragmentMatch.newInstance(id, MATCH_TYPE.LAST_MATCH, league_name)
             } else {
-                return FragmentMatch.newInstance(id, MATCH_TYPE.NEXT_MATCH)
+                return FragmentMatch.newInstance(id, MATCH_TYPE.NEXT_MATCH, league_name)
             }
         }
 

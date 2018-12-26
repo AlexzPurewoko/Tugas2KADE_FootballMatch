@@ -7,4 +7,5 @@ interface FragmentLastMatchModel {
     fun onHideLoading()
     fun onCancelShow(what: String)
     fun onShowMatch(all_match: List<MatchTeamLeagueData>)
+    fun onNullMatch(id: String)
 }
