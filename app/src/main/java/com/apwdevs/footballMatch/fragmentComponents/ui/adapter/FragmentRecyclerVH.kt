@@ -17,9 +17,9 @@ class FragmentRecyclerVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val date: TextView = itemView.findViewById(R.id.adapter_cardview_footballmatch_id_date)
     fun bindItem(item: MatchTeamLeagueData, pos: Int, listener: (MatchTeamLeagueData, Int) -> Unit) {
         home_team_name.text = item.strHomeTeam
-        home_team_score.text = item.intHomeScore ?: "0"
+        home_team_score.text = item.intHomeScore ?: "-"
         away_team_name.text = item.strAwayTeam
-        away_team_score.text = item.intAwayScore ?: "0"
+        away_team_score.text = item.intAwayScore ?: "-"
         date.text = getDate(item.dateEvent, "yyyy-MM-dd")
         itemView.setOnClickListener {
             listener(item, pos)

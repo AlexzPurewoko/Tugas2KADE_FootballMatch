@@ -74,8 +74,8 @@ class FragmentFavorites : Fragment() {
                             x.idEvent,
                             x.homeTeam,
                             x.awayTeam,
-                            x.homeScore.toString(),
-                            x.awayScore.toString(),
+                            if (x.homeScore == null) "-" else x.homeScore.toString(),
+                            if (x.awayScore == null) "-" else x.awayScore.toString(),
                             null,
                             x.dateEvent
                         )

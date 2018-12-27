@@ -216,8 +216,8 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
 
         name_home.text = team_props[0].strTeam
         name_away.text = team_props[1].strTeam
-        score_home.text = match_details.intHomeScore
-        score_away.text = match_details.intAwayScore
+        score_home.text = match_details.intHomeScore ?: "-"
+        score_away.text = match_details.intAwayScore ?: "-"
         Picasso.get().load(team_props[0].strTeamBadge).resize(100, 100).into(home_logo)
         Picasso.get().load(team_props[1].strTeamBadge).resize(100, 100).into(away_logo)
         date_text.text = getDate(match_details.dateEvent, "yyyy-MM-dd")
