@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:title="@string/last_match"
+            android:icon="@drawable/last_match"
+            app:showAsAction="ifRoom"
+            android:enabled="true"
+            android:id="@+id/last_match"/>
+    <item
+            android:title="@string/next_match"
+            android:icon="@drawable/next_match"
+            app:showAsAction="ifRoom"
+            android:enabled="true"
+            android:id="@+id/next_match"/>
+    <item
+            android:id="@+id/favorite_match"
+            android:title="@string/favorites"
+            app:showAsAction="ifRoom"
+            android:enabled="true"
+            android:icon="@drawable/ic_favorites"/>
+</menu>

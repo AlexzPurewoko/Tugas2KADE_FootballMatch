@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.apwdevs.footballMatch.MatchDetail">
+    <item android:id="@+id/action_favorite"
+          android:title="Favorite"
+          android:icon="@drawable/ic_add_to_favorites"
+          android:enabled="true"
+          app:showAsAction="ifRoom"/>
+</menu>

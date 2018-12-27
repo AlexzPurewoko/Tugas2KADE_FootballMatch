@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -8,6 +8,7 @@
         tools:context=".MatchDetail">
 
     <android.support.design.widget.AppBarLayout
+            android:id="@+id/match_detail_appbar"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:theme="@style/AppTheme.AppBarOverlay">
@@ -20,7 +21,14 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     </android.support.design.widget.AppBarLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_below="@id/match_detail_appbar"
+            android:id="@+id/match_detail_swiperefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    >
+        <include layout="@layout/content_match_detail"/>
 
-    <include layout="@layout/content_match_detail"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

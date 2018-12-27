@@ -15,4 +15,7 @@
     <string name="football_tab_next_match">Next Match</string>
     <string name="adapter_str_vs">vs</string>
     <string name="str_0">0</string>
+    <string name="next_match">Next Match</string>
+    <string name="last_match">Last Match</string>
+    <string name="favorites">Favorites</string>
 </resources>

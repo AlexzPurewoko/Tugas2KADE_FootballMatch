@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.apwdevs.tugaskade2_footballmatch">
+          package="com.apwdevs.footballMatch">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -13,7 +13,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".SplashScreen"
+                android:name="com.apwdevs.footballMatch.SplashScreen"
+                android:noHistory="true"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -22,18 +23,18 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".FootballMatchActivity"
+                android:name="com.apwdevs.footballMatch.FootballMatchActivity"
                 android:label="@string/title_activity_football_match"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-                android:name=".MatchDetail"
+                android:name="com.apwdevs.footballMatch.MatchDetail"
                 android:label="@string/title_activity_match_detail"
-                android:parentActivityName=".FootballMatchActivity"
+                android:parentActivityName="com.apwdevs.footballMatch.FootballMatchActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.apwdevs.tugaskade2_footballmatch.FootballMatchActivity"/>
+                    android:value="com.apwdevs.footballMatch.FootballMatchActivity"/>
         </activity>
     </application>
 
