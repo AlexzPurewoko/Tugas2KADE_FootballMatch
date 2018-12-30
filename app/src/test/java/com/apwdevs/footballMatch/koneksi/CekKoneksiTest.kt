@@ -11,7 +11,7 @@ class CekKoneksiTest {
     fun isConnected() {
         val cekKoneksi = mock(CekKoneksi::class.java)
         val coroutine = TestCoroutineContext()
-        cekKoneksi.isReachableNetwoorks(coroutineContextProvider = coroutine)
-        verify(cekKoneksi).isReachableNetwoorks(coroutineContextProvider = coroutine)
+        cekKoneksi.isReachableNetworks(coroutineContextProvider = coroutine)
+        verify(cekKoneksi).isReachableNetworks(coroutineContextProvider = coroutine)
     }
 }

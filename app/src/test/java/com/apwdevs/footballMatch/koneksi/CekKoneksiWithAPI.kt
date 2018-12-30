@@ -10,7 +10,7 @@ class CekKoneksiWithAPI {
     fun isConnected() {
         val cekKoneksi = Mockito.mock(CekKoneksi::class.java)
         val coroutine = TestCoroutineContext()
-        cekKoneksi.isReachableNetwoorks("www.thesportsdb.com", coroutine)
-        Mockito.verify(cekKoneksi).isReachableNetwoorks("www.thesportsdb.com", coroutine)
+        cekKoneksi.isReachableNetworks("www.thesportsdb.com", coroutine)
+        Mockito.verify(cekKoneksi).isReachableNetworks("www.thesportsdb.com", coroutine)
     }
 }

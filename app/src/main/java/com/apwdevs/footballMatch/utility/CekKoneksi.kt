@@ -21,14 +21,14 @@ object CekKoneksi {
             ConnectivityManager.TYPE_WIFI
             ).state == NetworkInfo.State.CONNECTED
         ) {
-            return isReachableNetwoorks("8.8.8.8", coroutineContextProvider)
+            return isReachableNetworks("8.8.8.8", coroutineContextProvider)
         }
         return GlobalScope.async(coroutineContextProvider.main) {
             false
         }
     }
 
-    fun isReachableNetwoorks(
+    fun isReachableNetworks(
         host: String = "google.com",
         coroutineContextProvider: CoroutineContextProvider
     ): Deferred<Boolean> = GlobalScope.async(coroutineContextProvider.main) {
