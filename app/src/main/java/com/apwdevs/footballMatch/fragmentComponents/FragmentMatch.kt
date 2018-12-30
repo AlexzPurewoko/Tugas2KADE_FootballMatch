@@ -14,9 +14,9 @@ import com.apwdevs.footballMatch.R
 import com.apwdevs.footballMatch.api.ApiRepository
 import com.apwdevs.footballMatch.fragmentComponents.apiRequest.MATCH_TYPE
 import com.apwdevs.footballMatch.fragmentComponents.dataController.MatchTeamLeagueData
-import com.apwdevs.footballMatch.fragmentComponents.presenter.FragmentLastMatchPresenter
-import com.apwdevs.footballMatch.fragmentComponents.ui.FragmentLastMatchModel
-import com.apwdevs.footballMatch.fragmentComponents.ui.FragmentLastMatchUI
+import com.apwdevs.footballMatch.fragmentComponents.presenter.FragmentMatchPresenter
+import com.apwdevs.footballMatch.fragmentComponents.ui.FragmentMatchModel
+import com.apwdevs.footballMatch.fragmentComponents.ui.FragmentMatchUI
 import com.apwdevs.footballMatch.fragmentComponents.ui.adapter.FragmentRecyclerAdapter
 import com.apwdevs.footballMatch.utility.ParameterClass
 import com.apwdevs.footballMatch.utility.gone
@@ -29,22 +29,22 @@ import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.support.v4.onRefresh
 
-class FragmentMatch : Fragment(), FragmentLastMatchModel {
+class FragmentMatch : Fragment(), FragmentMatchModel {
 
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var progressBar: ProgressBar
     private lateinit var recyclerView: RecyclerView
-    private lateinit var presenter: FragmentLastMatchPresenter
+    private lateinit var presenter: FragmentMatchPresenter
     private var items: MutableList<MatchTeamLeagueData> = mutableListOf()
     private lateinit var adapter: FragmentRecyclerAdapter
     private var idValue: String? = null
-    private var match_type: MATCH_TYPE? = null
-    private var league_name: String? = null
+    private var matchType: MATCH_TYPE? = null
+    private var leagueName: String? = null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val layout = FragmentLastMatchUI().createView(AnkoContext.create(context!!, container!!))
-
+        val layout = FragmentMatchUI().createView(AnkoContext.create(context!!, container!!))
         // Gets the id
         swipeRefreshLayout = layout.find(R.id.adapter_fragment_lastmatch_swiperefresh)
         progressBar = layout.find(R.id.adapter_fragment_lastmatch_progressbar)
@@ -53,24 +53,24 @@ class FragmentMatch : Fragment(), FragmentLastMatchModel {
         val gson = Gson()
         val apiRepository = ApiRepository()
         idValue = arguments?.getString(ARG_INT_ID)
-        match_type = arguments?.getSerializable(ARG_MATCH_TYPE) as MATCH_TYPE
-        league_name = arguments?.getString(ARG_NAME_LEAGUE)
-        presenter = FragmentLastMatchPresenter(context!!, this, gson, apiRepository)
+        matchType = arguments?.getSerializable(ARG_MATCH_TYPE) as MATCH_TYPE
+        leagueName = arguments?.getString(ARG_NAME_LEAGUE)
+        presenter = FragmentMatchPresenter(context!!, this, gson, apiRepository)
         adapter = FragmentRecyclerAdapter(items) { it, _ ->
             startActivity(
                 intentFor<MatchDetail>(
                     ParameterClass.ID_EVENT_MATCH_SELECTED to it.idEvent,
                     ParameterClass.ID_SELECTED_LEAGUE_KEY to idValue,
-                    ParameterClass.NAME_LEAGUE_KEY to league_name
+                    ParameterClass.NAME_LEAGUE_KEY to leagueName
                 ).clearTask()
             )
         }
         recyclerView.adapter = adapter
-        if (idValue != null && match_type != null)
-            presenter.getMatch(idValue!!, match_type!!)
+        if (idValue != null && matchType != null)
+            presenter.getMatch(idValue!!, matchType!!)
         swipeRefreshLayout.onRefresh {
-            if (idValue != null && match_type != null)
-                presenter.getMatch(idValue!!, match_type!!)
+            if (idValue != null && matchType != null)
+                presenter.getMatch(idValue!!, matchType!!)
         }
         return layout
     }
@@ -84,18 +84,18 @@ class FragmentMatch : Fragment(), FragmentLastMatchModel {
     }
 
     override fun onCancelShow(what: String) {
-        alert(what, getString(R.string.app_name), {
-            this.negativeButton("Okay", {
+        alert(what, getString(R.string.app_name)) {
+            this.negativeButton("Okay") {
                 it.dismiss()
-            })
+            }
             this.iconResource = android.R.drawable.ic_dialog_alert
-        }).show()
+        }.show()
     }
 
-    override fun onShowMatch(all_match: List<MatchTeamLeagueData>) {
+    override fun onShowMatch(allMatch: List<MatchTeamLeagueData>) {
         swipeRefreshLayout.isRefreshing = false
         items.clear()
-        items.addAll(all_match)
+        items.addAll(allMatch)
         adapter.notifyDataSetChanged()
     }
 
@@ -103,24 +103,24 @@ class FragmentMatch : Fragment(), FragmentLastMatchModel {
         swipeRefreshLayout.isRefreshing = false
         items.clear()
         adapter.notifyDataSetChanged()
-        alert("Sorry :(\nNo match found in League id $id. Please select another league", getString(R.string.app_name), {
-            this.negativeButton("Okay", {
+        alert("Sorry :(\nNo match found in League id $id. Please select another league", getString(R.string.app_name)) {
+            this.negativeButton("Okay") {
                 it.dismiss()
-                val i = context?.packageManager?.getLaunchIntentForPackage(context?.packageName)
+                val i = context?.packageManager?.getLaunchIntentForPackage(context?.packageName!!)
                 if (i != null) {
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(i)
                 }
 
-            })
+            }
             this.iconResource = android.R.drawable.ic_dialog_alert
-        }).show()
+        }.show()
     }
 
     companion object {
-        val ARG_INT_ID = "ID_SELECTED_LEAGUE"
-        val ARG_NAME_LEAGUE = "LEAGUE_NAME"
-        val ARG_MATCH_TYPE = "MATCH_TYPE"
+        const val ARG_INT_ID = "ID_SELECTED_LEAGUE"
+        const val ARG_NAME_LEAGUE = "LEAGUE_NAME"
+        const val ARG_MATCH_TYPE = "MATCH_TYPE"
 
         fun newInstance(idLeague: String, match_type: MATCH_TYPE, league_name: String): FragmentMatch {
             val fragment = FragmentMatch()

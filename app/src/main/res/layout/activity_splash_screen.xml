@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <TextView
+                android:id="@+id/splash_text_title"
                 android:paddingLeft="16dp"
                 android:text="@string/splash_string_welcome"
                 android:layout_width="match_parent"
@@ -49,6 +50,7 @@
                 android:layout_height="wrap_content"/>
 
         <TextView
+                android:id="@+id/splash_text_desc"
                 android:paddingLeft="16dp"
                 android:text="@string/aplash_string_select_league"
                 android:layout_width="match_parent"

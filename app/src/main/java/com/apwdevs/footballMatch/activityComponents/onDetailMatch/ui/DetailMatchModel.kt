@@ -8,9 +8,9 @@ interface DetailMatchModel {
     fun showLoading()
     fun hideLoading()
     fun onSuccessLoadingData(
-        match_data: DetailMatchDataClass,
-        team_props: List<TeamPropData>,
-        data_recycler: MutableList<DataPropertyRecycler>
+        matchData: DetailMatchDataClass,
+        teamProps: List<TeamPropData>,
+        dataRecycler: MutableList<DataPropertyRecycler>
     )
 
     fun onFailedLoadingData(what: String)

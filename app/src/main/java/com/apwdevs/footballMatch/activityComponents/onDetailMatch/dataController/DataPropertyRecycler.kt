@@ -1,8 +1,8 @@
 package com.apwdevs.footballMatch.activityComponents.onDetailMatch.dataController
 
 data class DataPropertyRecycler(
-    val is_property: Boolean,
+    val isProperty: Boolean,
     val name: String,
-    val home_value: String?,
-    val away_value: String?
+    val homeValue: String?,
+    val awayValue: String?
 )

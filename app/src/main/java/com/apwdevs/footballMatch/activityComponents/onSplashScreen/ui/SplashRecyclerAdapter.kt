@@ -9,21 +9,18 @@ import com.apwdevs.footballMatch.activityComponents.onSplashScreen.dataControlle
 
 class SplashRecyclerAdapter(
     private val ctx: Context,
-    private val list_league: List<TeamLeagueData>,
+    private val listLeague: List<TeamLeagueData>,
     private val listener: (TeamLeagueData) -> Unit
 ) : RecyclerView.Adapter<SplashRecyclerVH>() {
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): SplashRecyclerVH {
-        val created =
-            SplashRecyclerVH(LayoutInflater.from(ctx).inflate(R.layout.adapter_splash_recyclerview, p0, false))
-
-        return created
+        return SplashRecyclerVH(LayoutInflater.from(ctx).inflate(R.layout.adapter_splash_recyclerview, p0, false))
     }
 
     override fun getItemCount(): Int {
-        return list_league.size
+        return listLeague.size
     }
 
     override fun onBindViewHolder(p0: SplashRecyclerVH, p1: Int) {
-        p0.bindItem(list_league[p1], listener)
+        p0.bindItem(listLeague[p1], listener)
     }
 }

@@ -22,6 +22,7 @@ import com.apwdevs.footballMatch.api.ApiRepository
 import com.apwdevs.footballMatch.database.FavoriteData
 import com.apwdevs.footballMatch.database.database
 import com.apwdevs.footballMatch.utility.DialogShowHelper
+import com.apwdevs.footballMatch.utility.MyDate.getDate
 import com.apwdevs.footballMatch.utility.ParameterClass
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
@@ -35,24 +36,22 @@ import org.jetbrains.anko.db.select
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.support.v4.onRefresh
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MatchDetail : AppCompatActivity(), DetailMatchModel {
 
 
     // data section
-    private lateinit var match_details: DetailMatchDataClass
-    private lateinit var team_props: List<TeamPropData>
-    private lateinit var data_props: MutableList<DataPropertyRecycler>
+    private lateinit var matchDetails: DetailMatchDataClass
+    private lateinit var teamProps: List<TeamPropData>
+    private lateinit var dataProps: MutableList<DataPropertyRecycler>
     // upper layout section
-    private lateinit var home_logo: ImageView
-    private lateinit var away_logo: ImageView
-    private lateinit var score_home: TextView
-    private lateinit var score_away: TextView
-    private lateinit var name_home: TextView
-    private lateinit var name_away: TextView
-    private lateinit var date_text: TextView
+    private lateinit var homeLogo: ImageView
+    private lateinit var awayLogo: ImageView
+    private lateinit var scoreHome: TextView
+    private lateinit var scoreAway: TextView
+    private lateinit var nameHome: TextView
+    private lateinit var nameAway: TextView
+    private lateinit var dateText: TextView
 
     // recyclersection
     private lateinit var recyclerView: RecyclerView
@@ -62,9 +61,9 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
     private var isFavorite: Boolean = false
     private var menuItem: Menu? = null
     private val dialog: DialogShowHelper = DialogShowHelper(this)
-    private lateinit var id_match: String
-    private lateinit var id_league: String
-    private lateinit var name_league: String
+    private lateinit var idMatch: String
+    private lateinit var idLeague: String
+    private lateinit var nameLeague: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,9 +72,9 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setSupportActionBar(toolbar)
         prepareLayout()
-        id_match = intent.getStringExtra(ParameterClass.ID_EVENT_MATCH_SELECTED)
-        id_league = intent.getStringExtra(ParameterClass.ID_SELECTED_LEAGUE_KEY)
-        name_league = intent.getStringExtra(ParameterClass.NAME_LEAGUE_KEY)
+        idMatch = intent.getStringExtra(ParameterClass.ID_EVENT_MATCH_SELECTED)
+        idLeague = intent.getStringExtra(ParameterClass.ID_SELECTED_LEAGUE_KEY)
+        nameLeague = intent.getStringExtra(ParameterClass.NAME_LEAGUE_KEY)
         match_detail_swiperefresh.setColorSchemeColors(
             getColors(R.color.colorAccent),
             getColors(android.R.color.holo_green_light),
@@ -86,9 +85,9 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
         val gson = Gson()
         val presenter = DetailMatchPresenter(this, apiRepository, this, gson)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        presenter.getDataFromServer(id_match)
+        presenter.getDataFromServer(idMatch)
         match_detail_swiperefresh.onRefresh {
-            presenter.getDataFromServer(id_match)
+            presenter.getDataFromServer(idMatch)
         }
     }
 
@@ -126,8 +125,8 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
             val result = select(FavoriteData.TABLE_FAVORITE)
                 .whereArgs(
                     "(${FavoriteData.ID_LEAGUE} = {id} AND ${FavoriteData.ID_EVENT} = {event})",
-                    "id" to id_league,
-                    "event" to id_match
+                    "id" to idLeague,
+                    "event" to idMatch
                 )
             val favorites = result.parseList(classParser<FavoriteData>())
 
@@ -147,14 +146,14 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
             database.use {
                 insert(
                     FavoriteData.TABLE_FAVORITE,
-                    FavoriteData.ID_LEAGUE to id_league,
-                    FavoriteData.ID_EVENT to id_match,
-                    FavoriteData.LEAGUE_NAME to name_league,
-                    FavoriteData.DATE_EVENT to match_details.dateEvent,
-                    FavoriteData.HOME_TEAM to match_details.strHomeTeam,
-                    FavoriteData.HOME_SCORE to match_details.intHomeScore?.toInt(),
-                    FavoriteData.AWAY_TEAM to match_details.strAwayTeam,
-                    FavoriteData.AWAY_SCORE to match_details.intAwayScore?.toInt()
+                    FavoriteData.ID_LEAGUE to idLeague,
+                    FavoriteData.ID_EVENT to idMatch,
+                    FavoriteData.LEAGUE_NAME to nameLeague,
+                    FavoriteData.DATE_EVENT to matchDetails.dateEvent,
+                    FavoriteData.HOME_TEAM to matchDetails.strHomeTeam,
+                    FavoriteData.HOME_SCORE to matchDetails.intHomeScore?.toInt(),
+                    FavoriteData.AWAY_TEAM to matchDetails.strAwayTeam,
+                    FavoriteData.AWAY_SCORE to matchDetails.intAwayScore?.toInt()
                 )
             }
             match_detail_swiperefresh.snackbar("Added into Database, :)").show()
@@ -170,8 +169,8 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
                 delete(
                     FavoriteData.TABLE_FAVORITE,
                     "(${FavoriteData.ID_LEAGUE} = {id} AND ${FavoriteData.ID_EVENT} = {event})",
-                    "id" to id_league,
-                    "event" to id_match
+                    "id" to idLeague,
+                    "event" to idMatch
                 )
             }
             match_detail_swiperefresh.snackbar("Removed from Database, :(").show()
@@ -181,13 +180,13 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
     }
 
     private fun prepareLayout() {
-        home_logo = content_match_detail_id_home_logoteam
-        away_logo = content_match_detail_id_away_logoteam
-        score_home = content_match_detail_id_teamscore_left
-        score_away = content_match_detail_id_teamscore_right
-        name_home = content_match_detail_id_teamname_left
-        name_away = content_match_detail_id_teamname_right
-        date_text = content_match_detail_id_date
+        homeLogo = content_match_detail_id_home_logoteam
+        awayLogo = content_match_detail_id_away_logoteam
+        scoreHome = content_match_detail_id_teamscore_left
+        scoreAway = content_match_detail_id_teamscore_right
+        nameHome = content_match_detail_id_teamname_left
+        nameAway = content_match_detail_id_teamname_right
+        dateText = content_match_detail_id_date
 
         recyclerView = content_match_detail_id_recyclerlist
         dialog.buildLoadingLayout()
@@ -202,60 +201,25 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
     }
 
     override fun onSuccessLoadingData(
-        match_data: DetailMatchDataClass,
-        team_props: List<TeamPropData>,
-        data_recycler: MutableList<DataPropertyRecycler>
+        matchData: DetailMatchDataClass,
+        teamProps: List<TeamPropData>,
+        dataRecycler: MutableList<DataPropertyRecycler>
     ) {
         match_detail_swiperefresh.isRefreshing = false
-        this.match_details = match_data
-        this.team_props = team_props
-        this.data_props = data_recycler
-        adapter = DetailMatchRecyclerAdapter(data_props)
+        this.matchDetails = matchData
+        this.teamProps = teamProps
+        this.dataProps = dataRecycler
+        adapter = DetailMatchRecyclerAdapter(dataProps)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        name_home.text = team_props[0].strTeam
-        name_away.text = team_props[1].strTeam
-        score_home.text = match_details.intHomeScore ?: "-"
-        score_away.text = match_details.intAwayScore ?: "-"
-        Picasso.get().load(team_props[0].strTeamBadge).resize(100, 100).into(home_logo)
-        Picasso.get().load(team_props[1].strTeamBadge).resize(100, 100).into(away_logo)
-        date_text.text = getDate(match_details.dateEvent, "yyyy-MM-dd")
-    }
-
-    private fun getDate(strDate: String?, pattern: String): CharSequence? {
-        if (strDate == null) return null
-        val calendar = Calendar.getInstance()
-        calendar.time = SimpleDateFormat(pattern).parse(strDate)
-        val day = when (calendar.get(Calendar.DAY_OF_WEEK)) {
-            Calendar.SUNDAY -> "Sun"
-            Calendar.MONDAY -> "Mon"
-            Calendar.THURSDAY -> "Thu"
-            Calendar.WEDNESDAY -> "Wed"
-            Calendar.SATURDAY -> "Sat"
-            Calendar.TUESDAY -> "Tue"
-            Calendar.FRIDAY -> "Fri"
-            else -> "nan"
-        }
-        val month = when (calendar.get(Calendar.MONTH)) {
-            Calendar.JANUARY -> "Jan"
-            Calendar.FEBRUARY -> "Feb"
-            Calendar.MARCH -> "March"
-            Calendar.APRIL -> "April"
-            Calendar.MAY -> "May"
-            Calendar.JUNE -> "June"
-            Calendar.JULY -> "July"
-            Calendar.AUGUST -> "August"
-            Calendar.SEPTEMBER -> "Sep"
-            Calendar.OCTOBER -> "Oct"
-            Calendar.NOVEMBER -> "Nov"
-            Calendar.DECEMBER -> "Dec"
-            else -> "nan"
-        }
-        val date = calendar.get(Calendar.DAY_OF_MONTH)
-        val year = calendar.get(Calendar.YEAR)
-
-        return "$day, $date $month $year"
+        nameHome.text = teamProps[0].strTeam
+        nameAway.text = teamProps[1].strTeam
+        scoreHome.text = matchDetails.intHomeScore ?: "-"
+        scoreAway.text = matchDetails.intAwayScore ?: "-"
+        Picasso.get().load(teamProps[0].strTeamBadge).resize(100, 100).into(homeLogo)
+        Picasso.get().load(teamProps[1].strTeamBadge).resize(100, 100).into(awayLogo)
+        dateText.text = getDate(matchDetails.dateEvent, "yyyy-MM-dd")
     }
 
     override fun onFailedLoadingData(what: String) {
@@ -266,8 +230,8 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
         finish()
         startActivity(
             intentFor<FootballMatchActivity>(
-                ParameterClass.ID_SELECTED_LEAGUE_KEY to id_league,
-                ParameterClass.NAME_LEAGUE_KEY to name_league
+                ParameterClass.ID_SELECTED_LEAGUE_KEY to idLeague,
+                ParameterClass.NAME_LEAGUE_KEY to nameLeague
             ).clearTask()
         )
     }

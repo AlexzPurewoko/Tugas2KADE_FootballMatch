@@ -10,7 +10,7 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.swipeRefreshLayout
 
-class FragmentLastMatchUI : AnkoComponent<ViewGroup> {
+class FragmentMatchUI : AnkoComponent<ViewGroup> {
     override fun createView(ui: AnkoContext<ViewGroup>): View = with(ui) {
         linearLayout {
             lparams(width = matchParent, height = wrapContent)

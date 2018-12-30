@@ -36,8 +36,8 @@ class SplashScreen : AppCompatActivity(), SplashView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
         val gson = Gson()
-        val api_repo = ApiRepository()
-        val adapter = SplashPresenter(this, this, api_repo, gson)
+        val apiRepo = ApiRepository()
+        val adapter = SplashPresenter(this, this, apiRepo, gson)
         adapter.getLeagueList()
 
         setTransparentColorBar()
@@ -88,8 +88,8 @@ class SplashScreen : AppCompatActivity(), SplashView {
     }
 
     override fun onDataIsNotLoaded(err: String) {
-        alert(err, getString(R.string.app_name), {
-            this.negativeButton("Okay", {
+        alert(err, getString(R.string.app_name)) {
+            this.negativeButton("Okay") {
                 it.dismiss()
                 this@SplashScreen.finish()
                 val pid = Process.myPid()
@@ -97,9 +97,9 @@ class SplashScreen : AppCompatActivity(), SplashView {
                     Process.killProcess(pid)
                 }, 1000)
 
-            })
+            }
             this.iconResource = android.R.drawable.ic_dialog_alert
-        }).show()
+        }.show()
     }
 
     override fun onBackPressed() {

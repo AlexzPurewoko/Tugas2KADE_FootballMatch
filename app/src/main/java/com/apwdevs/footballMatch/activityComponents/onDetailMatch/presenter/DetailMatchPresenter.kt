@@ -6,27 +6,35 @@ import com.apwdevs.footballMatch.activityComponents.onDetailMatch.dataController
 import com.apwdevs.footballMatch.activityComponents.onDetailMatch.ui.DetailMatchModel
 import com.apwdevs.footballMatch.api.ApiRepository
 import com.apwdevs.footballMatch.utility.CekKoneksi
+import com.apwdevs.footballMatch.utility.CoroutineContextProvider
 import com.google.gson.Gson
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class DetailMatchPresenter(
     private val ctx: Context,
     private val apiRepository: ApiRepository,
     private val model: DetailMatchModel,
-    private val gson: Gson
+    private val gson: Gson,
+    private val isTesting: Boolean = false,
+    private val contextPool: CoroutineContextProvider = CoroutineContextProvider()
 ) {
 
     fun getDataFromServer(event_id: String) {
         model.showLoading()
-        doAsync {
-            var data: DetailMatchResponse? = null
+        GlobalScope.launch(contextPool.main) {
+            var data: DetailMatchResponse?
             var msg: String? = null
-            var data_team: MutableList<TeamPropData>? = null
-            var recycler_data: MutableList<DataPropertyRecycler>? = null
-            if (CekKoneksi.isConnected(ctx)) {
+            var dataTeam: MutableList<TeamPropData>? = null
+            var recyclerData: MutableList<DataPropertyRecycler>? = null
+            val connect = if (!isTesting) {
+                CekKoneksi.isConnected(ctx).await()
+            } else {
+                true
+            }
+            if (connect) {
                 data = gson.fromJson(
-                    apiRepository.doRequest(GetDataFromAPI.getDetailMatchURL(event_id)),
+                    apiRepository.doRequest(GetDataFromAPI.getDetailMatchURL(event_id)).await(),
                     DetailMatchResponse::class.java
                 )
                 if (data == null) {
@@ -34,32 +42,33 @@ class DetailMatchPresenter(
                 } else {
                     val idHome = data.events[0].idHomeTeam
                     val idAway = data.events[0].idAwayTeam
-                    val data_team_home = gson.fromJson(
-                        apiRepository.doRequest(GetDataFromAPI.getImageClubURL(idHome!!)),
+                    val dataTeamHome = gson.fromJson(
+                        apiRepository.doRequest(GetDataFromAPI.getImageClubURL(idHome!!)).await(),
                         TeamPropDataResponse::class.java
                     )
-                    val data_team_away = gson.fromJson(
-                        apiRepository.doRequest(GetDataFromAPI.getImageClubURL(idAway!!)),
+                    val dataTeamAway = gson.fromJson(
+                        apiRepository.doRequest(GetDataFromAPI.getImageClubURL(idAway!!)).await(),
                         TeamPropDataResponse::class.java
                     )
-                    data_team = mutableListOf()
-                    data_team.clear()
-                    data_team.add(data_team_home.teams[0])
-                    data_team.add(data_team_away.teams[0])
-                    recycler_data = getDataRecycler(data.events[0])
-                    if (recycler_data == null) {
+                    dataTeam = mutableListOf()
+                    dataTeam.clear()
+                    dataTeam.add(dataTeamHome.teams[0])
+                    dataTeam.add(dataTeamAway.teams[0])
+                    recyclerData = getDataRecycler(data.events[0])
+                    if (recyclerData == null) {
                         msg = "RecyclerData is null"
                     }
                 }
-
-                uiThread {
+                if (isTesting)
+                    Thread.sleep(1500)
+                //uiThread {
                     model.hideLoading()
                     if (msg != null) {
                         model.onFailedLoadingData(msg)
                     } else {
-                        model.onSuccessLoadingData(data.events[0], data_team?.toList()!!, recycler_data!!)
+                        model.onSuccessLoadingData(data.events[0], dataTeam?.toList()!!, recyclerData!!)
                     }
-                }
+                //}
             }
         }
     }

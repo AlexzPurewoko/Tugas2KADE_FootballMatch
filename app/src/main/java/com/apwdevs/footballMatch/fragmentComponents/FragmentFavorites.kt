@@ -13,7 +13,7 @@ import com.apwdevs.footballMatch.R
 import com.apwdevs.footballMatch.database.FavoriteData
 import com.apwdevs.footballMatch.database.database
 import com.apwdevs.footballMatch.fragmentComponents.dataController.MatchTeamLeagueData
-import com.apwdevs.footballMatch.fragmentComponents.ui.FragmentLastMatchUI
+import com.apwdevs.footballMatch.fragmentComponents.ui.FragmentMatchUI
 import com.apwdevs.footballMatch.fragmentComponents.ui.adapter.FragmentRecyclerAdapter
 import com.apwdevs.footballMatch.utility.ParameterClass
 import com.apwdevs.footballMatch.utility.gone
@@ -89,7 +89,7 @@ class FragmentFavorites : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val layout = FragmentLastMatchUI().createView(AnkoContext.create(requireContext(), container!!))
+        val layout = FragmentMatchUI().createView(AnkoContext.create(requireContext(), container!!))
         listTeam = layout.find(R.id.adapter_fragment_lastmatch_recyclerview)
         swipeRefreshLayout = layout.find(R.id.adapter_fragment_lastmatch_swiperefresh)
         layout.find<ProgressBar>(R.id.adapter_fragment_lastmatch_progressbar).gone()
