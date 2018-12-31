@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import com.apwdevs.footballMatch.fragmentComponents.FragmentFavorites
 import com.apwdevs.footballMatch.fragmentComponents.FragmentMatch
-import com.apwdevs.footballMatch.fragmentComponents.apiRequest.MATCH_TYPE
+import com.apwdevs.footballMatch.fragmentComponents.apiRequest.MatchType
 import com.apwdevs.footballMatch.utility.ParameterClass
 import kotlinx.android.synthetic.main.activity_football_match.*
 import org.jetbrains.anko.clearTask
@@ -78,8 +78,8 @@ class FootballMatchActivity : AppCompatActivity() {
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                0 -> FragmentMatch.newInstance(id, MATCH_TYPE.LAST_MATCH, leagueName)
-                1 -> FragmentMatch.newInstance(id, MATCH_TYPE.NEXT_MATCH, leagueName)
+                0 -> FragmentMatch.newInstance(id, MatchType.LAST_MATCH, leagueName)
+                1 -> FragmentMatch.newInstance(id, MatchType.NEXT_MATCH, leagueName)
                 else -> FragmentFavorites.newInstance(id)
             }
         }

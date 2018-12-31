@@ -23,7 +23,7 @@ class DetailMatchPresenter(
     fun getDataFromServer(event_id: String) {
         model.showLoading()
         GlobalScope.launch(contextPool.main) {
-            var data: DetailMatchResponse?
+            val data: DetailMatchResponse?
             var msg: String? = null
             var dataTeam: MutableList<TeamPropData>? = null
             var recyclerData: MutableList<DataPropertyRecycler>? = null

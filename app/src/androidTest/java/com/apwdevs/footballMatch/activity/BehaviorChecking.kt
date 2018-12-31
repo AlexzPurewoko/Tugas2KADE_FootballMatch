@@ -44,6 +44,7 @@ class BehaviorChecking {
     }
 
     private fun onTestUnfavorite() {
+        // try to deletes all favorites match from Favorite menu
         for (i in 1..2) {
             onView(isRoot()).perform(swipeLeft(), swipeLeft())
             Thread.sleep(SHORT_TIME)
@@ -52,6 +53,8 @@ class BehaviorChecking {
             onView(allOf(withId(adapter_fragment_lastmatch_recyclerview), isDisplayed()))
                 .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
             Thread.sleep(MIDDLE_TIME)
+
+            // try to remove from favorites, if success star icon is unchecked and shows the message "Removed from Databases :("
             onView(withId(action_favorite))
                 .perform(click())
             Thread.sleep(SHORT_TIME)
@@ -59,6 +62,7 @@ class BehaviorChecking {
                 .perform(pressBack())
             Thread.sleep(MIDDLE_TIME)
         }
+        // if the test above success, all favorite match is deleted from Favorites menu
         onView(isRoot()).perform(swipeLeft(), swipeLeft())
     }
 
@@ -70,9 +74,20 @@ class BehaviorChecking {
         Thread.sleep(SHORT_TIME)
         onView(isRoot()).perform(swipeUp())
         Thread.sleep(MIDDLE_TIME)
+
+        // try to add into favorites, if success star icon is activated and shows the message "Added into Databases :)"
         onView(withId(action_favorite))
             .perform(click())
-        Thread.sleep(SHORT_TIME)
+        Thread.sleep(MIDDLE_TIME)
+        // try to remove from favorites, if success star icon is unchecked and shows the message "Removed from Databases :("
+        onView(withId(action_favorite))
+            .perform(click())
+        Thread.sleep(MIDDLE_TIME)
+        // we have to add again into favorites, and after that, we have to check into Favorite menu in Home, whether is added or not
+        onView(withId(action_favorite))
+            .perform(click())
+        Thread.sleep(MIDDLE_TIME)
+
         onView(isRoot())
             .perform(pressBack())
         Thread.sleep(MIDDLE_TIME)
@@ -126,16 +141,30 @@ class BehaviorChecking {
         Thread.sleep(SHORT_TIME)
         onView(isRoot()).perform(swipeDown())
         Thread.sleep(MIDDLE_TIME)
+
+        // try to add into favorites, if success star icon is activated and shows the message "Added into Databases :)"
         onView(withId(action_favorite))
             .perform(click())
-        Thread.sleep(SHORT_TIME)
+        Thread.sleep(MIDDLE_TIME)
+        // try to remove from favorites, if success star icon is unchecked and shows the message "Removed from Databases :("
+        onView(withId(action_favorite))
+            .perform(click())
+        Thread.sleep(MIDDLE_TIME)
+        // we have to add again into favorites, and after that, we have to check into Favorite menu in Home, whether is added or not
+        onView(withId(action_favorite))
+            .perform(click())
+        Thread.sleep(MIDDLE_TIME)
+
+
         onView(isRoot())
             .perform(pressBack())
         Thread.sleep(MIDDLE_TIME)
+        //// swipe into last left section (Favorites Menu)
         for (i in 0..2) {
             onView(withId(container)).perform(swipeLeft())
             Thread.sleep(MIDDLE_TIME)
         }
+        ///// The match can be shown in favorites menu after we added it into favorites from DetailMatch Activity
         onView(isRoot()).perform(swipeDown())
         Thread.sleep(MIDDLE_TIME)
 

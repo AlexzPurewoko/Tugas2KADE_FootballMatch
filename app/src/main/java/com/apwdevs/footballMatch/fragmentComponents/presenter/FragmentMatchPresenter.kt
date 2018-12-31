@@ -3,7 +3,7 @@ package com.apwdevs.footballMatch.fragmentComponents.presenter
 import android.content.Context
 import com.apwdevs.footballMatch.api.ApiRepository
 import com.apwdevs.footballMatch.fragmentComponents.apiRequest.GetMatchInLeague
-import com.apwdevs.footballMatch.fragmentComponents.apiRequest.MATCH_TYPE
+import com.apwdevs.footballMatch.fragmentComponents.apiRequest.MatchType
 import com.apwdevs.footballMatch.fragmentComponents.dataController.MatchTeamLeagueResponse
 import com.apwdevs.footballMatch.fragmentComponents.ui.FragmentMatchModel
 import com.apwdevs.footballMatch.utility.CekKoneksi
@@ -20,7 +20,7 @@ class FragmentMatchPresenter(
     private val isTesting: Boolean = false,
     private val contextPool: CoroutineContextProvider = CoroutineContextProvider()
 ) {
-    fun getMatch(id: String, matchType: MATCH_TYPE) {
+    fun getMatch(id: String, matchType: MatchType) {
         view.onShowLoading()
         var message: String? = null
         var data: MatchTeamLeagueResponse? = null

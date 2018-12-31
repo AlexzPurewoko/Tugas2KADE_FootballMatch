@@ -82,7 +82,7 @@ class SplashScreen : AppCompatActivity(), SplashView {
     }
 
     private fun setRecyclerSize() {
-        var point = Point()
+        val point = Point()
         windowManager.defaultDisplay.getSize(point)
         recyclerView.minimumHeight = (point.y / 2)
     }

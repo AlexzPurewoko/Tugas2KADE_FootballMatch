@@ -2,7 +2,7 @@ package com.apwdevs.footballMatch.presenter
 
 import android.content.Context
 import com.apwdevs.footballMatch.api.ApiRepository
-import com.apwdevs.footballMatch.fragmentComponents.apiRequest.MATCH_TYPE
+import com.apwdevs.footballMatch.fragmentComponents.apiRequest.MatchType
 import com.apwdevs.footballMatch.fragmentComponents.dataController.MatchTeamLeagueData
 import com.apwdevs.footballMatch.fragmentComponents.dataController.MatchTeamLeagueResponse
 import com.apwdevs.footballMatch.fragmentComponents.presenter.FragmentMatchPresenter
@@ -47,7 +47,7 @@ class FragmentMatchPresenterTest {
         val leagues: MutableList<MatchTeamLeagueData> = mutableListOf()
         val response = MatchTeamLeagueResponse(leagues)
         val leagueId = "4328"
-        val matchType = MATCH_TYPE.LAST_MATCH
+        val matchType = MatchType.LAST_MATCH
 
         runBlocking {
             Mockito.`when`(apiRepository.doRequest(ArgumentMatchers.anyString()))
@@ -76,7 +76,7 @@ class FragmentMatchPresenterTest {
         val leagues: MutableList<MatchTeamLeagueData> = mutableListOf()
         val response = MatchTeamLeagueResponse(leagues)
         val leagueId = "4328"
-        val matchType = MATCH_TYPE.NEXT_MATCH
+        val matchType = MatchType.NEXT_MATCH
 
         runBlocking {
             Mockito.`when`(apiRepository.doRequest(ArgumentMatchers.anyString()))

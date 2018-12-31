@@ -12,7 +12,7 @@ import android.widget.ProgressBar
 import com.apwdevs.footballMatch.MatchDetail
 import com.apwdevs.footballMatch.R
 import com.apwdevs.footballMatch.api.ApiRepository
-import com.apwdevs.footballMatch.fragmentComponents.apiRequest.MATCH_TYPE
+import com.apwdevs.footballMatch.fragmentComponents.apiRequest.MatchType
 import com.apwdevs.footballMatch.fragmentComponents.dataController.MatchTeamLeagueData
 import com.apwdevs.footballMatch.fragmentComponents.presenter.FragmentMatchPresenter
 import com.apwdevs.footballMatch.fragmentComponents.ui.FragmentMatchModel
@@ -39,7 +39,7 @@ class FragmentMatch : Fragment(), FragmentMatchModel {
     private var items: MutableList<MatchTeamLeagueData> = mutableListOf()
     private lateinit var adapter: FragmentRecyclerAdapter
     private var idValue: String? = null
-    private var matchType: MATCH_TYPE? = null
+    private var matchType: MatchType? = null
     private var leagueName: String? = null
 
 
@@ -53,7 +53,7 @@ class FragmentMatch : Fragment(), FragmentMatchModel {
         val gson = Gson()
         val apiRepository = ApiRepository()
         idValue = arguments?.getString(ARG_INT_ID)
-        matchType = arguments?.getSerializable(ARG_MATCH_TYPE) as MATCH_TYPE
+        matchType = arguments?.getSerializable(ARG_MATCH_TYPE) as MatchType
         leagueName = arguments?.getString(ARG_NAME_LEAGUE)
         presenter = FragmentMatchPresenter(context!!, this, gson, apiRepository)
         adapter = FragmentRecyclerAdapter(items) { it, _ ->
@@ -120,13 +120,13 @@ class FragmentMatch : Fragment(), FragmentMatchModel {
     companion object {
         const val ARG_INT_ID = "ID_SELECTED_LEAGUE"
         const val ARG_NAME_LEAGUE = "LEAGUE_NAME"
-        const val ARG_MATCH_TYPE = "MATCH_TYPE"
+        const val ARG_MATCH_TYPE = "MatchType"
 
-        fun newInstance(idLeague: String, match_type: MATCH_TYPE, league_name: String): FragmentMatch {
+        fun newInstance(idLeague: String, matchType: MatchType, league_name: String): FragmentMatch {
             val fragment = FragmentMatch()
             val args = Bundle()
             args.putString(ARG_INT_ID, idLeague)
-            args.putSerializable(ARG_MATCH_TYPE, match_type)
+            args.putSerializable(ARG_MATCH_TYPE, matchType)
             args.putString(ARG_NAME_LEAGUE, league_name)
             fragment.arguments = args
             return fragment
