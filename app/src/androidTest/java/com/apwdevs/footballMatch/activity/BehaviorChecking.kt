@@ -40,7 +40,7 @@ class BehaviorChecking {
         Thread.sleep(SHORT_TIME)
         onTestNextMatch()
         onTestUnfavorite()
-        Thread.sleep(LONG_TIME)
+        Thread.sleep(MIDDLE_TIME)
     }
 
     private fun onTestUnfavorite() {
@@ -52,7 +52,17 @@ class BehaviorChecking {
                 .check(matches(isDisplayed()))
             onView(allOf(withId(adapter_fragment_lastmatch_recyclerview), isDisplayed()))
                 .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-            Thread.sleep(MIDDLE_TIME)
+
+            // wait the ui thread until finished
+            while (true) {
+                try {
+                    onView(withId(content_match_detail_id_recyclerlist))
+                        .check(matches(isDisplayed()))
+                    break
+                } catch (e: Throwable) {
+                    Thread.sleep(SHORT_TIME)
+                }
+            }
 
             // try to remove from favorites, if success star icon is unchecked and shows the message "Removed from Databases :("
             onView(withId(action_favorite))
@@ -67,9 +77,33 @@ class BehaviorChecking {
     }
 
     private fun onTestNextMatch() {
+
+        // wait the ui thread until finished
+        while (true) {
+            try {
+                onView(allOf(withId(adapter_fragment_lastmatch_progressbar), isDisplayed()))
+                    .check(matches(isDisplayed()))
+
+            } catch (e: Throwable) {
+                break
+            }
+            Thread.sleep(SHORT_TIME)
+        }
+
         onView(allOf(withId(adapter_fragment_lastmatch_recyclerview), isDisplayed()))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(3, click()))
-        Thread.sleep(MIDDLE_TIME)
+
+        // wait the ui thread until finished
+        while (true) {
+            try {
+                onView(withId(content_match_detail_id_recyclerlist))
+                    .check(matches(isDisplayed()))
+                break
+            } catch (e: Throwable) {
+                Thread.sleep(SHORT_TIME)
+            }
+        }
+
         onView(isRoot()).perform(swipeDown())
         Thread.sleep(SHORT_TIME)
         onView(isRoot()).perform(swipeUp())
@@ -104,9 +138,20 @@ class BehaviorChecking {
         onView(withId(container))
             .check(matches(isDisplayed()))
 
+        // wait the ui thread until finished
+        while (true) {
+            try {
+                onView(allOf(withId(adapter_fragment_lastmatch_progressbar), isDisplayed()))
+                    .check(matches(isDisplayed()))
+
+            } catch (e: Throwable) {
+                break
+            }
+            Thread.sleep(SHORT_TIME)
+        }
+
         onView(allOf(withId(adapter_fragment_lastmatch_recyclerview), isDisplayed()))
             .check(matches(isDisplayed()))
-        Thread.sleep(MIDDLE_TIME)
 
         // check the viewpager
         var a = 0
@@ -137,6 +182,18 @@ class BehaviorChecking {
         onView(allOf(withId(adapter_fragment_lastmatch_recyclerview), isDisplayed()))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(8, click()))
         Thread.sleep(MIDDLE_TIME)
+
+        // wait the ui thread until finished
+        while (true) {
+            try {
+                onView(withId(content_match_detail_id_recyclerlist))
+                    .check(matches(isDisplayed()))
+                break
+            } catch (e: Throwable) {
+                Thread.sleep(SHORT_TIME)
+            }
+        }
+        Thread.sleep(SHORT_TIME)
         onView(isRoot()).perform(swipeUp())
         Thread.sleep(SHORT_TIME)
         onView(isRoot()).perform(swipeDown())
@@ -160,23 +217,25 @@ class BehaviorChecking {
             .perform(pressBack())
         Thread.sleep(MIDDLE_TIME)
         //// swipe into last left section (Favorites Menu)
-        for (i in 0..2) {
-            onView(withId(container)).perform(swipeLeft())
-            Thread.sleep(MIDDLE_TIME)
-        }
+        onView(withId(container)).perform(swipeLeft(), swipeLeft())
         ///// The match can be shown in favorites menu after we added it into favorites from DetailMatch Activity
-        onView(isRoot()).perform(swipeDown())
         Thread.sleep(MIDDLE_TIME)
-
     }
 
     private fun onSplashStartup() {
         // check loading
-        onView(withId(splash_relative_loading))
-            .check(matches(isDisplayed()))
         // wait the UI thread until finish
-        // so we can set the wait time
-        Thread.sleep(6000)
+        while (true) {
+            try {
+                onView(withId(splash_relative_loading))
+                    .check(matches(isDisplayed()))
+            } catch (e: Throwable) {
+                break
+            }
+            Thread.sleep(SHORT_TIME)
+        }
+
+        Thread.sleep(SHORT_TIME)
         // check container of league content
         onView(withId(splash_linear_final))
             .check(matches(isDisplayed()))
