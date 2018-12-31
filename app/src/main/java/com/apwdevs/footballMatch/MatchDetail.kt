@@ -156,7 +156,7 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
                     FavoriteData.AWAY_SCORE to matchDetails.intAwayScore?.toInt()
                 )
             }
-            match_detail_swiperefresh.snackbar("Added into Database, :)").show()
+            match_detail_swiperefresh.snackbar(ParameterClass.STRING_ADD_INTO_DATABASE).show()
         } catch (e: SQLiteConstraintException) {
             match_detail_swiperefresh.snackbar(e.localizedMessage).show()
 
@@ -173,7 +173,7 @@ class MatchDetail : AppCompatActivity(), DetailMatchModel {
                     "event" to idMatch
                 )
             }
-            match_detail_swiperefresh.snackbar("Removed from Database, :(").show()
+            match_detail_swiperefresh.snackbar(ParameterClass.STRING_REMOVE_FROM_DATABASE).show()
         } catch (e: SQLiteConstraintException) {
             match_detail_swiperefresh.snackbar(e.localizedMessage).show()
         }

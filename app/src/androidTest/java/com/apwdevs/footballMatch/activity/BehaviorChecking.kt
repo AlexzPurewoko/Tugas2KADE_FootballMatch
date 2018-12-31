@@ -10,6 +10,7 @@ import android.support.test.runner.AndroidJUnit4
 import android.support.v7.widget.RecyclerView
 import com.apwdevs.footballMatch.R.id.*
 import com.apwdevs.footballMatch.SplashScreen
+import com.apwdevs.footballMatch.utility.ParameterClass
 import org.hamcrest.Matchers.allOf
 import org.junit.Rule
 import org.junit.Test
@@ -67,7 +68,9 @@ class BehaviorChecking {
             // try to remove from favorites, if success star icon is unchecked and shows the message "Removed from Databases :("
             onView(withId(action_favorite))
                 .perform(click())
-            Thread.sleep(SHORT_TIME)
+            // check if its displayed or not
+            onView(withText(ParameterClass.STRING_REMOVE_FROM_DATABASE)).check(matches(isDisplayed()))
+            Thread.sleep(MIDDLE_TIME)
             onView(isRoot())
                 .perform(pressBack())
             Thread.sleep(MIDDLE_TIME)
@@ -109,23 +112,10 @@ class BehaviorChecking {
         onView(isRoot()).perform(swipeUp())
         Thread.sleep(MIDDLE_TIME)
 
-        // try to add into favorites, if success star icon is activated and shows the message "Added into Databases :)"
-        onView(withId(action_favorite))
-            .perform(click())
-        Thread.sleep(MIDDLE_TIME)
-        // try to remove from favorites, if success star icon is unchecked and shows the message "Removed from Databases :("
-        onView(withId(action_favorite))
-            .perform(click())
-        Thread.sleep(MIDDLE_TIME)
-        // we have to add again into favorites, and after that, we have to check into Favorite menu in Home, whether is added or not
-        onView(withId(action_favorite))
-            .perform(click())
-        Thread.sleep(MIDDLE_TIME)
+        doTestFavorites()
 
         onView(isRoot())
             .perform(pressBack())
-        Thread.sleep(MIDDLE_TIME)
-        onView(isRoot()).perform(swipeLeft())
         Thread.sleep(MIDDLE_TIME)
     }
 
@@ -154,17 +144,10 @@ class BehaviorChecking {
             .check(matches(isDisplayed()))
 
         // check the viewpager
-        var a = 0
-        val length = 2
-        var reverse = false
-        while (a >= 0) {
-            if (reverse) {
-                onView(withId(container)).perform(swipeRight())
-                a--
-            } else {
-                onView(withId(container)).perform(swipeLeft())
-                a++
-                reverse = a == length
+        for (a in 1..2) {
+            when (a) {
+                1 -> onView(isRoot()).perform(swipeLeft(), swipeLeft())
+                2 -> onView(isRoot()).perform(swipeRight(), swipeRight())
             }
             Thread.sleep(MIDDLE_TIME)
         }
@@ -199,19 +182,7 @@ class BehaviorChecking {
         onView(isRoot()).perform(swipeDown())
         Thread.sleep(MIDDLE_TIME)
 
-        // try to add into favorites, if success star icon is activated and shows the message "Added into Databases :)"
-        onView(withId(action_favorite))
-            .perform(click())
-        Thread.sleep(MIDDLE_TIME)
-        // try to remove from favorites, if success star icon is unchecked and shows the message "Removed from Databases :("
-        onView(withId(action_favorite))
-            .perform(click())
-        Thread.sleep(MIDDLE_TIME)
-        // we have to add again into favorites, and after that, we have to check into Favorite menu in Home, whether is added or not
-        onView(withId(action_favorite))
-            .perform(click())
-        Thread.sleep(MIDDLE_TIME)
-
+        doTestFavorites()
 
         onView(isRoot())
             .perform(pressBack())
@@ -260,6 +231,27 @@ class BehaviorChecking {
         onView(withId(splash_recycler))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(2, click()))
 
+    }
+
+    private fun doTestFavorites() {
+        // try to add into favorites, if success star icon is activated and shows the message "Added into Databases :)"
+        onView(withId(action_favorite))
+            .perform(click())
+        // check the snackbar text, is displayed or not
+        onView(withText(ParameterClass.STRING_ADD_INTO_DATABASE)).check(matches(isDisplayed()))
+        Thread.sleep(MIDDLE_TIME)
+        // try to remove from favorites, if success star icon is unchecked and shows the message "Removed from Databases :("
+        onView(withId(action_favorite))
+            .perform(click())
+        // check the snackbar text, is displayed or not
+        onView(withText(ParameterClass.STRING_REMOVE_FROM_DATABASE)).check(matches(isDisplayed()))
+        Thread.sleep(MIDDLE_TIME)
+        // we have to add again into favorites, and after that, we have to check into Favorite menu in Home, whether is added or not
+        onView(withId(action_favorite))
+            .perform(click())
+        // check the snackbar text, is displayed or not
+        onView(withText(ParameterClass.STRING_ADD_INTO_DATABASE)).check(matches(isDisplayed()))
+        Thread.sleep(MIDDLE_TIME)
     }
 
 }
